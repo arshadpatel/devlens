@@ -93,7 +93,9 @@ http://localhost:5173
 ## Screenshots
 
 ### Application UI
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/dd47e64f-8954-46ba-ae65-1402b6a53d19" />
 
 ### Backend Logs
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/573f2066-dfd9-455f-87a2-e07a6e5b09aa" />
 
 
