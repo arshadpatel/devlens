@@ -1,6 +1,6 @@
-# 🔎 ErrorLens
+# 🔎 DevLens
 
-ErrorLens is an AI-powered tool that analyzes error screenshots and explains the error in simple terms.
+DevLens is an AI-powered tool that analyzes error screenshots and explains the error in simple terms.
 
 It uses **Gemma 4 through the Gemini API** to identify the error, explain the root cause, provide evidence from the screenshot, and suggest possible fixes.
 
