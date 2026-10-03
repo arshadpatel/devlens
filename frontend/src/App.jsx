@@ -93,7 +93,7 @@ export default function App() {
     <>
       <header>
         <h1>
-          🔎 Error<span>Lens</span>{" "}
+          🔎 Dev<span>Lens</span>{" "}
           <small>— screenshot an error, get the fix</small>
         </h1>
         <span className="badge">Gemma 4 · {model}</span>

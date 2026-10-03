@@ -1,68 +1,99 @@
-# 🔎 ErrorLens — Best Use of Gemma 4
+# 🔎 ErrorLens
 
-Screenshot an error → **Gemma 4 (via the Gemini API)** reads the image and returns a plain-English
-explanation, root cause, quoted evidence, fix steps and copy-paste commands.
+ErrorLens is an AI-powered tool that analyzes error screenshots and explains the error in simple terms.
 
-**Stack:** React (Vite) UI · Spring Boot 3 backend (Java 17) · Gemma 4 through the Gemini API.
-The API key lives only on the server — the browser never sees it.
+It uses **Gemma 4 through the Gemini API** to identify the error, explain the root cause, provide evidence from the screenshot, and suggest possible fixes.
 
+## Tech Stack
+
+- **Frontend:** React + Vite
+- **Backend:** Spring Boot 3 + Java 17
+- **AI:** Gemma 4 via Gemini API
+- **Logging:** SLF4J
+
+## How It Works
+
+```text
+React UI
+   ↓
+Spring Boot REST API
+   ↓
+Gemini API
+   ↓
+Gemma 4
+   ↓
+Error explanation
+   ↓
+React UI
 ```
-browser (React) ──multipart /api/explain──▶ Spring Boot ──generateContent──▶ Gemini API (gemma-4-*)
-                ◀────────── JSON ───────────             ◀──── JSON text ────
-```
 
-## Prerequisites
-- Java 17+ and Maven 3.9+ (or open `backend/` in IntelliJ / VS Code and run `ErrorLensApplication`)
-- Node 18+
-- A Gemini API key (Google AI Studio). Confirm with the organizers that it can call Gemma 4.
+The Gemini API key is kept on the backend and is never exposed to the frontend.
 
-## Run it (two terminals)
+## Features
 
-**1. Backend**
+- Upload or paste an error screenshot
+- Analyze screenshots using Gemma 4
+- Provide additional error context
+- Select between supported Gemma 4 models
+- Get root cause, evidence, and suggested fixes
+- Copy suggested commands
+- Backend health check
+- SLF4J debug logging for API requests and processing
+
+## Running the Project
+
+### Backend
+
 ```bash
 cd backend
-export GEMINI_API_KEY=AIza...        # Windows PowerShell: $env:GEMINI_API_KEY="AIza..."
 mvn spring-boot:run
-# -> http://localhost:8080/api/health  should show apiKeyConfigured: true
 ```
 
-**2. Frontend**
+Set your Gemini API key before starting the backend.
+
+**Windows PowerShell**
+
+```powershell
+$env:GEMINI_API_KEY="YOUR_API_KEY"
+```
+
+**Linux / macOS**
+
+```bash
+export GEMINI_API_KEY="YOUR_API_KEY"
+```
+
+Backend runs on:
+
+```text
+http://localhost:8080
+```
+
+### Frontend
+
 ```bash
 cd frontend
 npm install
 npm run dev
-# -> http://localhost:5173
 ```
 
-Click **Load sample error** → **Explain with Gemma 4**. Or paste (Ctrl/Cmd+V) any error screenshot.
+Frontend runs on:
 
-## Where Gemma 4 is called (for judges)
-- `backend/src/main/java/com/errorlens/service/GeminiService.java` — builds the
-  `generateContent` request (image as `inline_data` + prompt), calls
-  `https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent`
-- Models (see `application.properties`): `gemma-4-26b-a4b-it` (default), `gemma-4-31b-it`
-- Change the default with `GEMINI_MODEL=gemma-4-31b-it`
+```text
+http://localhost:5173
+```
 
 ## API
-| Method | Path | Body | Returns |
-|---|---|---|---|
-| GET | `/api/health` | – | `{status, model, apiKeyConfigured}` |
-| POST | `/api/explain` | multipart: `image` (file), `context` (opt), `model` (opt) | JSON explanation, or `{error}` |
 
-## Demo tips (2 minutes)
-1. One sentence: "Beginners can't read stack traces — Gemma reads the screenshot and tells them what to do."
-2. Show the sample, click Explain, point at **"Read from your screenshot"** (proves the multimodal read).
-3. Paste a *real* error from your machine.
-4. Fallback: if the API/wifi fails, the **sample** shows a pre-recorded result (with a visible note).
-   Keep a backup screenshot + a screen recording just in case.
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/api/health` | Check backend status |
+| POST | `/api/explain` | Analyze an error screenshot |
 
-## Troubleshooting
-- `GEMINI_API_KEY is not set` → export it in the same terminal that runs `mvn spring-boot:run`.
-- `404 model not found` → check available Gemma 4 IDs in AI Studio; edit `gemini.allowed-models`
-  in `application.properties` and the `MODELS` array in `frontend/src/App.jsx`.
-- `Model did not return JSON` → just retry; temperature is already low (0.2).
-- Port clash → change `server.port` and the proxy target in `frontend/vite.config.js`.
-- Never commit your key. `.env*` files are git-ignored.
+## Screenshots
 
-## Ideas if you have time left
-Follow-up chat about the error, multi-screenshot input, history sidebar, "apply fix" diff for code screenshots.
+### Application UI
+
+### Backend Logs
+
+
